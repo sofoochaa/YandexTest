@@ -785,10 +785,11 @@ footer {
 
 @media (max-width: 575px) {
   body {
-    transform: scale(calc(100vw / 401));
+    transform: scale(calc(100vw / 575));
     transform-origin: top center;
-    width: 401px;
+    width: 575px;
     overflow-x: hidden;
+    
   }
 
   /* 1. ЛОГОТИП */
