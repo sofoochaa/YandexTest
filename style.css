@@ -783,7 +783,7 @@ footer {
 
 /* Адаптив для max-width: 575px */
 
-@media (max-width: 401px) {
+@media (max-width: 575px) {
   body {
     transform: scale(calc(100vw / 401));
     transform-origin: top center;
