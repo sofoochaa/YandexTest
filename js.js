@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+
   const sliderTrack = document.getElementById("slider-track");
   const prevBtn = document.getElementById("prevBtn");
   const nextBtn = document.getElementById("nextBtn");
@@ -17,7 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
     visibleCards = Math.floor(sliderWrapper.offsetWidth / desktopSlideStep);
     cards = Array.from(sliderTrack.querySelectorAll(".player-card")).filter(card => !card.classList.contains('clone'));
     totalCards = cards.length;
-
 
     sliderTrack.querySelectorAll('.clone').forEach(clone => clone.remove());
 
@@ -112,6 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initDesktopSlider();
 
+
   const slidesWrapper = document.querySelector('.slides-wrapper');
   const slides = document.querySelectorAll('.mobile-slide');
   const dots = document.querySelectorAll('.dot');
@@ -123,9 +124,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const gap = 40;
 
   function updateSlider() {
-    const step = slideWidth + gap;
-    slidesWrapper.style.transition = "transform 0.4s ease-in-out";
-    slidesWrapper.style.transform = `translateX(${-mobileCurrentIndex * step}px)`;
+    const slide = slides[mobileCurrentIndex];
+    const slideRect = slide.getBoundingClientRect();
+    const wrapperRect = slidesWrapper.parentElement.getBoundingClientRect();
+
+    const offset = slide.offsetLeft - (wrapperRect.width / 2 - slideRect.width / 2);
+
+
+    const adjustedOffset = mobileCurrentIndex === 0 ? 0 : offset;
+
+    slidesWrapper.style.transition = 'transform 0.4s ease-in-out';
+    slidesWrapper.style.transform = `translateX(-${adjustedOffset}px)`;
 
     dots.forEach((dot, index) => {
       dot.classList.toggle('active', index === mobileCurrentIndex);
@@ -139,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (mobileCurrentIndex > 0) {
       mobileCurrentIndex--;
       updateSlider();
-      resetMobileAutoSlide();
+
     }
   });
 
@@ -147,7 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (mobileCurrentIndex < slides.length - 1) {
       mobileCurrentIndex++;
       updateSlider();
-      resetMobileAutoSlide();
+
     }
   });
 
@@ -155,28 +164,9 @@ document.addEventListener("DOMContentLoaded", () => {
     dot.addEventListener('click', () => {
       mobileCurrentIndex = index;
       updateSlider();
-      resetMobileAutoSlide();
+
     });
   });
-
-  let mobileAutoSlideInterval = setInterval(() => {
-    mobileCurrentIndex++;
-    if (mobileCurrentIndex >= slides.length) {
-      mobileCurrentIndex = 0;
-    }
-    updateSlider();
-  }, 4000);
-
-  function resetMobileAutoSlide() {
-    clearInterval(mobileAutoSlideInterval);
-    mobileAutoSlideInterval = setInterval(() => {
-      mobileCurrentIndex++;
-      if (mobileCurrentIndex >= slides.length) {
-        mobileCurrentIndex = 0;
-      }
-      updateSlider();
-    }, 4000);
-  }
 
   updateSlider();
 });
